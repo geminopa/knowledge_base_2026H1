@@ -18,6 +18,35 @@
 - **`local_infile` のON→OFF**は、バッチ処理やデータ移行スクリプトで `LOAD DATA LOCAL INFILE` を使っている場合に影響する。エラーになった場合は、サーバー側・クライアント側両方で `local_infile=1` を明示する必要がある（セキュリティ上のリスクとのトレードオフのため、必要な範囲に限定するのが望ましい）。
 - **`table_open_cache` の増加**はメモリ使用量増にも直結するため、コンテナ環境などメモリ制約が厳しい場合は明示指定を検討する。
 
+## 良い点・悪い点・具体例
+
+### 良い点
+
+- `max_allowed_packet` の4MB→64MBにより、大きめのJSONカラムやBLOB、まとまった件数のバルクINSERTが、デフォルト設定のままでもエラーになりにくくなる。
+- `local_infile` のデフォルトOFF化は、SQLインジェクションなどを起点に `LOAD DATA LOCAL INFILE` を悪用してサーバー内の任意ファイルを読み取られる攻撃を、デフォルトの時点で塞いでくれるセキュリティ強化。
+
+### 悪い点（注意が必要な点）
+
+- `local_infile` がデフォルトOFFになったことで、これまで動いていたCSV一括投入バッチが突然失敗するようになる。原因がパラメータ変更だと気づきにくく、調査に時間がかかりがち。
+- `event_scheduler` がデフォルトONになることで、5.6/5.7時代に「テスト用に作って無効化したまま放置していたイベント」が、アップグレード後に無自覚に動き出すリスクがある。
+
+### 具体例
+
+```
+$ mysql -uapp_user -p --local-infile=1 -e "LOAD DATA LOCAL INFILE '/tmp/data.csv' INTO TABLE items;"
+ERROR 3948 (42000): Loading local data is disabled;
+this must be enabled on both the client and server sides
+```
+
+```sql
+-- サーバー側で明示的に許可する場合(必要な範囲に限定するのが望ましい)
+SET GLOBAL local_infile = 1;
+
+-- アップグレード前に休眠イベントを棚卸しする
+SHOW EVENTS;
+-- Status列が DISABLED になっているか必ず確認する
+```
+
 ## 確認コマンド
 
 ```sql

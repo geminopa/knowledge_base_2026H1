@@ -17,6 +17,40 @@
 - **`NO_ZERO_DATE` / `NO_ZERO_IN_DATE`**: `0000-00-00` や `2024-00-01` のような不正日付がエラーになる。5.6時代のダミーデータや初期値運用に依存していると要注意。
 - **`GROUP BY … ASC/DESC`構文の削除（8.0.13〜）**: `GROUP BY col DESC` のようなソート指定つきGROUP BYは廃止され、`ORDER BY` で明示する必要がある。
 
+## 良い点・悪い点・具体例
+
+### 良い点
+
+- `ONLY_FULL_GROUP_BY` により、「たまたま特定の1行の値が返ってきているだけ」という曖昧なGROUP BYクエリを事前にエラーとして弾ける。本番データが増減した時に集計結果が不安定になる、というバグを未然に防げる。
+- `STRICT_TRANS_TABLES` により、桁あふれや不正な値がサイレントに丸められて保存される事故を防げる。データ品質そのものが上がる。
+
+### 悪い点（注意が必要な点）
+
+- 今まで警告だけで動いていたクエリ・バッチ処理が、アップグレード後は突然エラーで止まるようになる。事前にテストしないまま本番へ適用すると、深夜バッチが軒並み失敗するといった障害になりやすい。
+- 特に古いORMや、文字列を組み立てて実行する動的SQLで、暗黙的に緩いsql_modeへ依存している場合は影響範囲の洗い出しに時間がかかる。
+
+### 具体例
+
+```sql
+-- 5.6ではエラーにならず、department内の「どれか1行」のnameが返っていた(結果が不定)
+SELECT department, name, salary FROM employees GROUP BY department;
+
+-- 8.0(ONLY_FULL_GROUP_BY)ではエラーになる
+-- ERROR 1055 (42000): 'employees.name' isn't in GROUP BY
+
+-- 正しく直すには、集約関数を使うかGROUP BYの対象列を明確にする
+SELECT department, MAX(name) AS name, MAX(salary) AS salary
+FROM employees GROUP BY department;
+```
+
+```sql
+-- STRICT_TRANS_TABLES: カラム長を超える値を入れた場合
+CREATE TABLE users (name VARCHAR(5));
+INSERT INTO users VALUES ('123456789');
+-- 5.6: 警告のみで 'name' は "12345" に切り詰められて保存される（気づきにくいデータ破損）
+-- 8.0: ERROR 1406 (22001): Data too long for column 'name' at row 1
+```
+
 ## 対応方法
 
 いきなり全て厳格化するのではなく、移行期間中は明示的に緩めたsql_modeを設定して段階移行することも可能。

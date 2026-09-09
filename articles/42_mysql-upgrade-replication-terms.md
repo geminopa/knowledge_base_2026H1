@@ -20,6 +20,32 @@ MySQL 8.0.22以降、レプリケーション関連の用語が `master`/`slave`
 - **`log_bin`（バイナリログ）のデフォルトが8.0以降ON**になっている。5.6/5.7でレプリケーションを使っておらずバイナリログも明示的にOFFにしていなかった環境では、アップグレード後にバイナリログが有効化され、ディスク使用量が増える可能性がある。
 - MySQL 8.4ではGTIDに「タグ」を付与できる新フォーマット（`UUID:TAG:NUMBER`）が追加されている。既存のGTID運用への影響は基本的にないが、新機能として把握しておくとよい。
 
+## 良い点・悪い点・具体例
+
+### 良い点
+
+- master/slaveという主従関係を連想させる用語から、より中立的な `source`/`replica` に変わったことで、社外向けドキュメントや対外的な説明でも配慮しやすくなった。
+- 新コマンド体系（`SHOW REPLICA STATUS`等）は、レプリケーション構成の要素（source, replica, binary log）がコマンド名から直感的に分かりやすくなっている。
+
+### 悪い点（注意が必要な点）
+
+- 既存の運用Runbook、監視スクリプト、Ansible/Terraformなどの構成管理コード、障害対応手順書で `CHANGE MASTER TO` や `SHOW SLAVE STATUS` をハードコードしている箇所が軒並み見直し対象になる。見落とすと、いざという時に「手順書通りのコマンドが通らない」事態になる。
+- 監視ツール（Zabbix、Datadog等）のMySQL連携プラグインが古いバージョンだと、新しい`SHOW REPLICA STATUS`の出力フォーマットや新設の`SHOW BINARY LOG STATUS`に対応しておらず、監視項目が取得できなくなることがある。
+
+### 具体例
+
+```sql
+-- 障害対応の手順書に書かれていたコマンド(5.6/5.7時代)
+CHANGE MASTER TO MASTER_HOST='db-primary', MASTER_USER='repl', MASTER_PASSWORD='xxx';
+START SLAVE;
+SHOW SLAVE STATUS\G
+
+-- 8.4での書き換え後
+CHANGE REPLICATION SOURCE TO SOURCE_HOST='db-primary', SOURCE_USER='repl', SOURCE_PASSWORD='xxx';
+START REPLICA;
+SHOW REPLICA STATUS\G
+```
+
 ## 確認コマンド
 
 ```sql

@@ -18,6 +18,37 @@ MySQL 5.6/5.7では `character_set_server` のデフォルトは `latin1` だっ
   collation_server=utf8mb4_general_ci
   ```
 
+## 良い点・悪い点・具体例
+
+### 良い点
+
+- 絵文字（😀など）や一部の難読漢字といった「4バイト文字」が正しく保存できるようになる。旧来の `utf8`（MySQLの`utf8`は実は3バイトまでしか使えない不完全な実装）では、こうした文字を含む文字列はエラーになったり文字化けしたりしていた。
+- グローバル対応のアプリ（多言語対応、SNS投稿機能など）で発生しがちな文字化けトラブルが根本的に減る。
+
+### 悪い点（注意が必要な点）
+
+- 同じ文字列でも1文字あたりの最大バイト数が3→4に増えるため、`VARCHAR(255)`などにインデックスを張っている場合、InnoDBのキー長上限（デフォルト767バイト、`innodb_large_prefix`等が絡む）に抵触しやすくなる。
+- 照合順序（collation）が変わることで、`ORDER BY`の並び順や`DISTINCT`の重複判定結果が変わる可能性がある。
+- 既存テーブルが旧文字コードのまま、新規テーブルだけutf8mb4という「混在状態」になっていると、JOIN時にエラーになる。
+
+### 具体例
+
+```sql
+-- 旧utf8(3バイト)のテーブルに絵文字を入れようとするとエラーになる
+CREATE TABLE old_table (name VARCHAR(50) CHARACTER SET utf8);
+INSERT INTO old_table (name) VALUES ('こんにちは😀');
+-- ERROR 1366 (HY000): Incorrect string value: '\xF0\x9F\x98\x80' for column 'name'
+
+-- utf8mb4なら問題なく入る
+CREATE TABLE new_table (name VARCHAR(50) CHARACTER SET utf8mb4);
+INSERT INTO new_table (name) VALUES ('こんにちは😀'); -- 成功
+
+-- 文字コードが異なるテーブル同士をJOINするとエラーになる例
+SELECT a.*, b.* FROM old_table a JOIN new_table b ON a.name = b.name;
+-- ERROR 1267 (HY000): Illegal mix of collations
+--   (utf8_general_ci,IMPLICIT) and (utf8mb4_0900_ai_ci,IMPLICIT) for operation '='
+```
+
 ## 確認コマンド
 
 ```sql

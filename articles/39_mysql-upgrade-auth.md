@@ -15,6 +15,33 @@ MySQL 5.6/5.7ではデフォルト認証プラグインは `mysql_native_passwor
 - MySQL 8.4では `default_authentication_plugin` システム変数自体が非推奨/削除されており、代わりに **`authentication_policy`** で認証方式のポリシー（優先順位・必須/任意）を指定する方式に変わっている。5.6/5.7からの設定ファイルをそのまま流用すると、この変数の指定が無効になる点に注意。
 - 既存ユーザーの認証方式は、アップグレードしても自動では変わらない（作成時のプラグインのまま）。新規ユーザー作成時のデフォルトが変わるという点がポイント。
 
+## 良い点・悪い点・具体例
+
+### 良い点
+
+- `caching_sha2_password` はSHA-256ベースで、`mysql_native_password`（SHA-1ベース）より暗号強度が高い。総当たり攻撃やハッシュ衝突のリスクに対してより堅牢になる。
+- 認証情報を接続元でキャッシュする仕組みのため、2回目以降の接続は毎回フルハンドシェイクをせずに済み、非SSL環境でも比較的高速に認証できる。
+
+### 悪い点（注意が必要な点）
+
+- 古いドライバ・言語ランタイム（更新が長期間止まっているPHPやJavaのプロジェクトなど）が `caching_sha2_password` に対応しておらず、アプリ側の接続処理でエラーになることがある。
+- 非SSL接続時はRSA公開鍵の交換が絡むため、ネットワーク構成やファイアウォールの設定次第で予期しない接続エラーが起きることがある。
+
+### 具体例
+
+```
+# 古いクライアントライブラリで接続すると発生するエラーの一例
+Error: ER_NOT_SUPPORTED_AUTH_MODE:
+Client does not support authentication protocol requested by server;
+consider upgrading MySQL client
+```
+
+```sql
+-- 対処法1: クライアントを更新できない場合の暫定策として、該当ユーザーだけ旧方式に戻す
+-- (恒久対応としてはクライアント更新が望ましい)
+ALTER USER 'legacy_app'@'%' IDENTIFIED WITH mysql_native_password BY 'password';
+```
+
 ## 対応方法の例
 
 ```sql
