@@ -56,4 +56,7 @@
 | 48 | /resume で前回の会話の続きから作業する | ⑨Claude Codeスラッシュコマンド | 下書き | | `09_claude-slash-commands/04_claude-resume.md` |
 | 49 | /code-review コマンドのオプションを使い分ける | ⑨Claude Codeスラッシュコマンド | 下書き | | `09_claude-slash-commands/05_claude-code-review-command.md` |
 | 50 | /permissions で「毎回の確認」を減らしつつ、危険な操作は止める | ⑨Claude Codeスラッシュコマンド | 下書き | | `09_claude-slash-commands/06_claude-permissions.md` |
-| 51 | 自作のスラッシュコマンド（skill）で、チームの定型作業を共通化する | ⑨Claude Codeスラッシュコマンド | 下書き | | `09_claude-slash-commands/07_claude-custom-skills.md` |
+| 51 | そもそもSkillsとは何か | ⑨Claude Codeスラッシュコマンド | 下書き | | `09_claude-slash-commands/07_claude-skills-what.md` |
+| 52 | Skillsは何のために使うのか | ⑨Claude Codeスラッシュコマンド | 下書き | | `09_claude-slash-commands/08_claude-skills-purpose.md` |
+| 53 | Skillsの使い方いろいろ | ⑨Claude Codeスラッシュコマンド | 下書き | | `09_claude-slash-commands/09_claude-skills-usage.md` |
+| 54 | Skillsを使う上での注意点 | ⑨Claude Codeスラッシュコマンド | 下書き | | `09_claude-slash-commands/10_claude-skills-cautions.md` |
