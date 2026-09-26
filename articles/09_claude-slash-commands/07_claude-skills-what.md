@@ -6,11 +6,11 @@ Skillsとは、Claude Codeに独自の指示・手順を追加できる仕組み
 
 | できること | 説明 |
 |---|---|
-| 独自コマンド化 | `/名前` と打つだけで、決まった手順をClaudeに実行させられる |
+| 独自コマンド化 | `/{command_name}` と打つだけで、決まった手順をClaudeに実行させられる |
 | 自動発動 | 人が呼ばなくても、会話の内容に合っていればClaudeが自分から使う |
 | チーム共有 | リポジトリにコミットすれば、クローンした人全員が使える |
 
-以前は `.claude/commands/名前.md` という形式があったが、現在は同じ役割をより柔軟にした **skill** 形式（`.claude/skills/名前/SKILL.md`）で作るのが基本になっている。
+以前は `.claude/commands/{command_name}.md` という形式があったが、現在は同じ役割をより柔軟にした **skill** 形式（`.claude/skills/{command_name}/SKILL.md`）で作るのが基本になっている。
 
 ## 具体例: 最小のSkill
 
