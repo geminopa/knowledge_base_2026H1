@@ -43,13 +43,10 @@
 | 35 | AIにテストケース案を出してもらう時のプロンプトの工夫 | ⑦AI/ツール活用 | 下書き | | `07_ai-tools/02_ai-test-case-prompting.md` |
 | 36 | AIで見積もり資料のたたき台を作らせる方法 | ⑦AI/ツール活用 | 下書き | | `07_ai-tools/03_ai-estimation-draft.md` |
 | 37 | AIツールで設計ドキュメントの誤字脱字チェックをする | ⑦AI/ツール活用 | 下書き | | `07_ai-tools/04_ai-doc-typo-check.md` |
-| 38 | MySQL 5.6→8.4: 文字コード・照合順序のデフォルト変更 | ⑧MySQLバージョンアップ | 下書き | | `08_mysql-upgrade/01_mysql-upgrade-charset.md` |
-| 39 | MySQL 5.6→8.4: 認証プラグイン・認証方式の変更 | ⑧MySQLバージョンアップ | 下書き | | `08_mysql-upgrade/02_mysql-upgrade-auth.md` |
-| 40 | MySQL 5.6→8.4: sql_modeとSQL挙動の厳格化 | ⑧MySQLバージョンアップ | 下書き | | `08_mysql-upgrade/03_mysql-upgrade-sqlmode.md` |
-| 41 | MySQL 5.6→8.4: InnoDB関連パラメータのデフォルト値変化 | ⑧MySQLバージョンアップ | 下書き | | `08_mysql-upgrade/04_mysql-upgrade-innodb.md` |
-| 42 | MySQL 5.6→8.4: レプリケーション用語・コマンドの刷新 | ⑧MySQLバージョンアップ | 下書き | | `08_mysql-upgrade/05_mysql-upgrade-replication-terms.md` |
-| 43 | MySQL 5.6→8.4: 廃止・削除された主要パラメータ一覧 | ⑧MySQLバージョンアップ | 下書き | | `08_mysql-upgrade/06_mysql-upgrade-removed-params.md` |
-| 44 | MySQL 5.6→8.4: その他の運用系パラメータのデフォルト変更 | ⑧MySQLバージョンアップ | 下書き | | `08_mysql-upgrade/07_mysql-upgrade-misc-defaults.md` |
+| 38 | MySQL 5.6 と 8.4 の比較: ONLY_FULL_GROUP_BY | ⑧MySQLバージョンアップ | 下書き | | `08_mysql-upgrade/01_mysql-upgrade-only-full-group-by.md` |
+| 39 | MySQL 5.6 と 8.4 の比較: ZERO DATE（0000-00-00）問題 | ⑧MySQLバージョンアップ | 下書き | | `08_mysql-upgrade/02_mysql-upgrade-zero-date.md` |
+| 40 | MySQL 5.6 と 8.4 の比較: 文字セットと照合順序 | ⑧MySQLバージョンアップ | 下書き | | `08_mysql-upgrade/03_mysql-upgrade-charset-collation.md` |
+| 41 | MySQL 5.6 と 8.4 の比較: my.cnf の設定 | ⑧MySQLバージョンアップ | 下書き | | `08_mysql-upgrade/04_mysql-upgrade-my-cnf.md` |
 | 45 | Claude Codeのスラッシュコマンド早見表（まず覚えたい10個） | ⑨Claude Codeスラッシュコマンド | 下書き | | `09_claude-slash-commands/01_claude-slash-cheatsheet.md` |
 | 46 | /clear と /compact の使い分け | ⑨Claude Codeスラッシュコマンド | 下書き | | `09_claude-slash-commands/02_claude-clear-vs-compact.md` |
 | 47 | /init と CLAUDE.md で、プロジェクトの前提を毎回説明しなくて済むようにする | ⑨Claude Codeスラッシュコマンド | 下書き | | `09_claude-slash-commands/03_claude-init-claude-md.md` |
@@ -60,8 +57,10 @@
 | 52 | Skillsは何のために使うのか | ⑨Claude Codeスラッシュコマンド | 下書き | | `09_claude-slash-commands/08_claude-skills-purpose.md` |
 | 53 | Skillsの使い方いろいろ | ⑨Claude Codeスラッシュコマンド | 下書き | | `09_claude-slash-commands/09_claude-skills-usage.md` |
 | 54 | Skillsを使う上での注意点 | ⑨Claude Codeスラッシュコマンド | 下書き | | `09_claude-slash-commands/10_claude-skills-cautions.md` |
-| 55 | テスト仕様書を読ませて、エビデンス格納ディレクトリを自動生成するプロンプト | ⑦AI/ツール活用 | 下書き | | `07_ai-tools/05_test-evidence-directory-prompt.md` |
-| 56 | そもそもパワーストラクチャとは何か | ②見積もり | 下書き | | `02_estimation/01_power-structure-what.md` |
-| 57 | パワーストラクチャは何のために使うのか | ②見積もり | 下書き | | `02_estimation/02_power-structure-purpose.md` |
-| 58 | パワーストラクチャの作り方 | ②見積もり | 下書き | | `02_estimation/03_power-structure-howto.md` |
-| 59 | パワーストラクチャを使う上での注意点 | ②見積もり | 下書き | | `02_estimation/04_power-structure-cautions.md` |
+| 55 | Claude Codeに実装前に質問攻めにしてもらう（/grill-me） | ⑦AI/ツール活用 | 下書き | | `07_ai-tools/05_claude-grill-me.md` |
+| 56 | /grill-me と Planモードの違い | ⑦AI/ツール活用 | 下書き | | `07_ai-tools/06_claude-grill-vs-plan-mode.md` |
+| 57 | テスト仕様書を読ませて、エビデンス格納ディレクトリを自動生成するプロンプト | ⑦AI/ツール活用 | 下書き | | `07_ai-tools/07_test-evidence-directory-prompt.md` |
+| 58 | そもそもパワーストラクチャとは何か | ②見積もり | 下書き | | `02_estimation/01_power-structure-what.md` |
+| 59 | パワーストラクチャは何のために使うのか | ②見積もり | 下書き | | `02_estimation/02_power-structure-purpose.md` |
+| 60 | パワーストラクチャの作り方 | ②見積もり | 下書き | | `02_estimation/03_power-structure-howto.md` |
+| 61 | パワーストラクチャを使う上での注意点 | ②見積もり | 下書き | | `02_estimation/04_power-structure-cautions.md` |
