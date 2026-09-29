@@ -61,3 +61,7 @@
 | 53 | Skillsの使い方いろいろ | ⑨Claude Codeスラッシュコマンド | 下書き | | `09_claude-slash-commands/09_claude-skills-usage.md` |
 | 54 | Skillsを使う上での注意点 | ⑨Claude Codeスラッシュコマンド | 下書き | | `09_claude-slash-commands/10_claude-skills-cautions.md` |
 | 55 | テスト仕様書を読ませて、エビデンス格納ディレクトリを自動生成するプロンプト | ⑦AI/ツール活用 | 下書き | | `07_ai-tools/05_test-evidence-directory-prompt.md` |
+| 56 | そもそもパワーストラクチャとは何か | ②見積もり | 下書き | | `02_estimation/01_power-structure-what.md` |
+| 57 | パワーストラクチャは何のために使うのか | ②見積もり | 下書き | | `02_estimation/02_power-structure-purpose.md` |
+| 58 | パワーストラクチャの作り方 | ②見積もり | 下書き | | `02_estimation/03_power-structure-howto.md` |
+| 59 | パワーストラクチャを使う上での注意点 | ②見積もり | 下書き | | `02_estimation/04_power-structure-cautions.md` |
